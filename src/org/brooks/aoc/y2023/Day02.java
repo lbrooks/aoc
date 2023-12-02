@@ -7,17 +7,10 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class Day02 {
-    private record Draw(
-            int blue,
-            int red,
-            int green
-    ) {
+    private record Draw(int blue, int red, int green) {
     }
 
-    private record Game(
-            int id,
-            List<Draw> draws
-    ) {
+    private record Game(int id, List<Draw> draws) {
     }
 
     private static Game parse(String s) {
@@ -27,9 +20,9 @@ public class Day02 {
 
         List<Draw> dws = new ArrayList<>();
 
-        for(String d : draws){
-            int blue =0, green=0, red = 0;
-            for(String hand : d.split(",")) {
+        for (String d : draws) {
+            int blue = 0, green = 0, red = 0;
+            for (String hand : d.split(",")) {
                 String[] cl = hand.trim().split(" ");
                 int num = Integer.parseInt(cl[0].trim());
                 switch (cl[1].trim()) {
@@ -53,29 +46,22 @@ public class Day02 {
     public static class Phase1 implements Solution<Long> {
         @Override
         public Long solve(Stream<String> input) {
-            return input
-                    .map(Day02::parse)
-                    .filter(g -> g.draws.stream().allMatch(d->d.blue <= 14 && d.green <= 13 && d.red <= 12))
-                    .mapToLong(g->g.id)
-                    .sum();
+            return input.map(Day02::parse).filter(g -> g.draws.stream().allMatch(d -> d.blue <= 14 && d.green <= 13 && d.red <= 12)).mapToLong(g -> g.id).sum();
         }
     }
 
     public static class Phase2 implements Solution<Long> {
         @Override
         public Long solve(Stream<String> input) {
-            return input
-                    .map(Day02::parse)
-                    .mapToLong(g -> {
-                        long mBlue = 0, mRed = 0, mGreen = 0;
-                        for (Draw d : g.draws) {
-                            mBlue = Math.max(mBlue, d.blue);
-                            mRed = Math.max(mRed, d.red);
-                            mGreen = Math.max(mGreen, d.green);
-                        }
-                        return mBlue * mRed * mGreen;
-                    })
-                    .sum();
+            return input.map(Day02::parse).mapToLong(g -> {
+                long mBlue = 0, mRed = 0, mGreen = 0;
+                for (Draw d : g.draws) {
+                    mBlue = Math.max(mBlue, d.blue);
+                    mRed = Math.max(mRed, d.red);
+                    mGreen = Math.max(mGreen, d.green);
+                }
+                return mBlue * mRed * mGreen;
+            }).sum();
         }
     }
 
